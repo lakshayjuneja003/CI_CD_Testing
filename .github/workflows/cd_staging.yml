@@ -11,12 +11,7 @@ jobs:
     steps:
       - name: Deploy via SSH
         run: |
-          echo "${{ secrets.PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.STAGING_SERVER_IP }} << 'EOF'
-            cd CI_CD_Testing
-            git pull origin main
-            pnpm install
-            pnpm run build
-            pm2 restart all
-          EOF
+           echo "${{ secrets.PRIVATE_KEY }}" > private_key
+           chmod 600 private_key
+           file private_key
+          
