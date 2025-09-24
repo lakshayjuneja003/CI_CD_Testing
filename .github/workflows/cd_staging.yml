@@ -14,8 +14,7 @@ jobs:
            echo "${{ secrets.PRIVATE_KEY_B64 }}" | base64 -d > private_key
            chmod 600 private_key
            file private_key
-           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.STAGING_SERVER_IP }} << 'EOF'
-           source ~/.bashrc
+           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.STAGING_SERVER_IP }} -t 'bash -l -c "
            echo "Connected to server"
            cd CI_CD_Testing
             git pull origin main
