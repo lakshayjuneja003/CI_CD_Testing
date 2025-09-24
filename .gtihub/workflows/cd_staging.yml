@@ -1,13 +1,22 @@
 name: "Deploy to staging"
+
 on:
   push:
-    branches:
-      - "main"
+    branches: [ main ]
 
 jobs:
-  name: deploy to the staging server
-  runs-on: ubuntu-latest  
-  -run : |
-      echo "${{ secrets.PRIVATE_KEY }}" &> private_key && chmod 600 private_key && ssh -o StrictHostKeyChecking=no -i private_key ubuntu@"${{secrets.STAGING_SERVER_IP}} && cd CI_CD_Testing && git pull origin main && pnpm run build && pm2 restart all"
-
-
+  deploy:
+    name: Deploy to the staging server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        run: |
+          echo "${{ secrets.PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.STAGING_SERVER_IP }} << 'EOF'
+            cd CI_CD_Testing
+            git pull origin main
+            pnpm install
+            pnpm run build
+            pm2 restart all
+          EOF
