@@ -18,6 +18,7 @@ jobs:
            echo "Connected to server"
            cd CI_CD_Testing
             git pull origin main
+            node --version
             pnpm install
             pnpm run build
             pm2 restart all
