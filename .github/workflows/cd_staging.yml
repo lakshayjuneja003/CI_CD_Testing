@@ -15,6 +15,7 @@ jobs:
            chmod 600 private_key
            file private_key
            ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.STAGING_SERVER_IP }} << 'EOF'
+           source ~/.bashrc
            echo "Connected to server"
            cd CI_CD_Testing
             git pull origin main
