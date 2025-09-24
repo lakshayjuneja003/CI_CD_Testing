@@ -11,15 +11,18 @@ jobs:
     steps:
       - name: Deploy via SSH
         run: |
-          echo "${{ secrets.PRIVATE_KEY_B64 }}" | base64 -d > private_key
-          chmod 600 private_key
-          file private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.STAGING_SERVER_IP }} -t "bash -l -c '
-            echo Connected to server
-            cd CI_CD_Testing
+           echo "${{ secrets.PRIVATE_KEY_B64 }}" | base64 -d > private_key
+           chmod 600 private_key
+           file private_key
+           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.STAGING_SERVER_IP }} << 'EOF'
+           export NVM_DIR="$HOME/.nvm"
+           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+           echo "Connected to server"
+           cd CI_CD_Testing
             git pull origin main
             node --version
             pnpm install
             pnpm run build
             pm2 restart all
-          '"
+            EOF
+          
