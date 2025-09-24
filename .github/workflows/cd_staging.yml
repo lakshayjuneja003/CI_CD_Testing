@@ -14,4 +14,5 @@ jobs:
            echo "${{ secrets.PRIVATE_KEY }}" > private_key
            chmod 600 private_key
            file private_key
+           echo private_key
           
